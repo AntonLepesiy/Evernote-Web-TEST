@@ -4,6 +4,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from os.path import join, dirname
+from webdriver_manager.chrome import ChromeDriverManager
+from pages.home_page import HomePage
 
 
 @pytest.fixture(scope='function')
@@ -18,6 +21,28 @@ def driver():
 
 
 @pytest.fixture(scope='function')
+def driver_with_cookies():
+    cookies_directory = join(dirname(__file__), 'cookies')
+    options = Options()
+    options.add_argument(f'user-data-dir{cookies_directory}')
+    chrome_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    chrome_driver.implicitly_wait(10)
+    chrome_driver.maximize_window()
+    yield chrome_driver
+    chrome_driver.quit()
+
+
+@pytest.fixture(scope='function')
+def is_logged(driver_with_cookies):
+    login_check = HomePage(driver_with_cookies)
+    login_check.open()
+    if login_check.login_success():
+        pass
+    else:
+        login_check.standard_login()
+
+
+@pytest.fixture(scope='function')    # Выдаліць?????????
 def driver_and_login():
     options = Options()
     options.add_experimental_option('detach', True)
@@ -36,4 +61,3 @@ def driver_and_login():
     WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'qa-HOME_TITLE')))
     yield chrome_driver
     chrome_driver.quit()
-

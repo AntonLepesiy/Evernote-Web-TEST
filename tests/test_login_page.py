@@ -2,8 +2,8 @@ from pages.login_page import LoginPage
 
 
 username = 'justlavtest@gmail.com'
-incorrect_username = 'bad_test_account@gmail.com'
 password = 'testHASLO1#'
+incorrect_username = 'bad_test_account@gmail.com'
 incorrect_password = 'bad_test_pass'
 create_acc_title = 'Создание аккаунта Evernote'
 

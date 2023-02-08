@@ -8,7 +8,7 @@ class LoginPage(BasePage):
         super().__init__(driver)
         self.page_url = 'https://www.evernote.com/Login.action'
 
-    def standard_login(self, username, password):
+    def simple_login(self, username, password):
         self.find(loc.USERNAME_FIELD).send_keys(username)
         self.find(loc.LOGIN_BUTTON).click()
         self.element_wait(loc.PASSWORD_FIELD, 10)

@@ -1,4 +1,5 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -35,3 +36,14 @@ class BasePage:
     def page_title_check(self, title):
         current_title = self.driver.title
         return current_title == title
+
+    def standard_login(self):
+        self.driver.get('https://www.evernote.com/Login.action')
+        self.driver.find_element(By.ID, 'username').send_keys('justlavtest@gmail.com')
+        self.driver.find_element(By.ID, 'loginButton').click()
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(self.driver.find_element(By.ID, 'password')))
+        self.driver.find_element(By.ID, 'password').send_keys('testHASLO1#')
+        self.driver.find_element(By.ID, 'loginButton').submit()
+        WebDriverWait(self.driver, 15).until(
+            EC.presence_of_element_located(self.driver.find_element(By.ID, 'qa-HOME_TITLE')))
