@@ -36,7 +36,7 @@ def driver_with_cookies():
 def is_logged(driver_with_cookies):
     login_check = HomePage(driver_with_cookies)
     login_check.open()
-    if login_check.login_success() is True:
+    if login_check.login_success():
         pass
     else:
         login_check.standard_login()

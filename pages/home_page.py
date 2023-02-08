@@ -2,7 +2,6 @@ from pages.base_page import BasePage
 from pages.locators import home_page_locators as loc
 
 
-
 class HomePage(BasePage):
 
     def __init__(self, driver):
@@ -14,5 +13,13 @@ class HomePage(BasePage):
                         '=true&hptsh=mvstlk5ADUf%2BghX07ak2TurPSgk%3D#?hm=true&'
 
     def login_success(self):
-        return self.element_wait(loc.HOMEPAGE_TITLE, 15)
+        return self.element_wait(loc.HOMEPAGE_TITLE, 5)
 
+    def create_new_button(self):
+        return self.find(loc.CREATE_NEW_NOTE)
+
+    def note_title(self):
+        return self.find(loc.NOTE_TITLE)
+
+    def home(self):
+        return self.find(loc.HOME_BUTTON)
