@@ -24,7 +24,7 @@ def driver():
 def driver_with_cookies():
     cookies_directory = join(dirname(__file__), 'cookies')
     options = Options()
-    options.add_argument(f'user-data-dir{cookies_directory}')
+    options.add_argument(f'user-data-dir={cookies_directory}')
     chrome_driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     chrome_driver.implicitly_wait(10)
     chrome_driver.maximize_window()
@@ -36,10 +36,12 @@ def driver_with_cookies():
 def is_logged(driver_with_cookies):
     login_check = HomePage(driver_with_cookies)
     login_check.open()
-    if login_check.login_success():
+    if login_check.is_login_check():
         pass
     else:
-        login_check.standard_login()
+        username = 'justlavtest@gmail.com'
+        password = 'testHASLO1#'
+        login_check.simple_login(username, password)
 
 
 @pytest.fixture(scope='function')    # Выдаліць?????????

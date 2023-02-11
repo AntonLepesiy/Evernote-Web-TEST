@@ -1,3 +1,4 @@
+from selenium.common import TimeoutException
 from pages.base_page import BasePage
 from pages.locators import home_page_locators as loc
 
@@ -15,11 +16,26 @@ class HomePage(BasePage):
     def login_success(self):
         return self.element_wait(loc.HOMEPAGE_TITLE, 5)
 
-    def create_new_button(self):
-        return self.find(loc.CREATE_NEW_NOTE)
+    def create_new(self):
+        self.find(loc.NEW_BUTTON).click()
 
     def note_title(self):
         return self.find(loc.NOTE_TITLE)
 
     def home(self):
         return self.find(loc.HOME_BUTTON)
+
+    def is_login_check(self):
+        try:
+            self.element_wait(loc.HOMEPAGE_TITLE, 3)
+        except TimeoutException:
+            return False
+        return True
+
+    def setting_button_is_displayed(self):
+        return self.find(loc.SETTINGS_BUTTON).is_displayed()
+
+    # def get_acc_name(self):
+    #     acc_name =  "justlavtest@gmail.com"
+    #     displaed_name = self.find(loc.ACC_NAME).
+    #     return

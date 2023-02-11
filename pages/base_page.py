@@ -1,7 +1,7 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from pages.locators import login_page_locators as loc
 
 
 class BasePage:
@@ -37,13 +37,11 @@ class BasePage:
         current_title = self.driver.title
         return current_title == title
 
-    def standard_login(self):
-        self.driver.get('https://www.evernote.com/Login.action')
-        self.driver.find_element(By.ID, 'username').send_keys('justlavtest@gmail.com')
-        self.driver.find_element(By.ID, 'loginButton').click()
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.driver.find_element(By.ID, 'password')))
-        self.driver.find_element(By.ID, 'password').send_keys('testHASLO1#')
-        self.driver.find_element(By.ID, 'loginButton').submit()
-        WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located(self.driver.find_element(By.ID, 'qa-HOME_TITLE')))
+    def simple_login(self, username, password):
+        self.find(loc.USERNAME_FIELD).send_keys(username)
+        self.find(loc.LOGIN_BUTTON).click()
+        self.element_wait(loc.PASSWORD_FIELD, 10)
+        self.find(loc.PASSWORD_FIELD).send_keys(password)
+        self.find(loc.CHECK_BOX).click()
+        self.find(loc.LOGIN_BUTTON).submit()
+        self.element_wait(loc.HOMEPAGE_TITLE, 15)
