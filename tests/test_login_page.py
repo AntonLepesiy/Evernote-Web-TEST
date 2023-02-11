@@ -21,7 +21,7 @@ def test_normal_login(driver):
 def test_login_check(driver):
     login_form = LoginPage(driver)
     login_form.open()
-    login_form.standard_login(username, password)
+    login_form.simple_login(username, password)
 
 
 def test_login_with_check_box(driver):
