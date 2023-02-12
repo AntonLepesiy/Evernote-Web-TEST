@@ -45,3 +45,6 @@ class BasePage:
         self.find(loc.CHECK_BOX).click()
         self.find(loc.LOGIN_BUTTON).submit()
         self.element_wait(loc.HOMEPAGE_TITLE, 15)
+
+    def wait(self, time):
+        self.driver.implicitly_wait(time)

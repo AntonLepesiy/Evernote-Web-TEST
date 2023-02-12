@@ -7,3 +7,4 @@ HOMEPAGE_TITLE = (By.ID, 'qa-HOME_TITLE')
 LOGIN_ERROR = (By.ID, 'responseMessageRow')
 CHECK_BOX = (By.XPATH, '//input[@id="rememberMe"]')
 CREATE_ACC_LINK = (By.ID, 'switch-link')
+
