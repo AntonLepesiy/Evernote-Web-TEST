@@ -23,14 +23,16 @@ class LoginPage(BasePage):
         return self.find(loc.LOGIN_BUTTON)
 
     def login_error(self):
-        return self.find(loc.LOGIN_ERROR)
+        self.element_wait(loc.LOGIN_ERROR, 10)
+        return self.find(loc.LOGIN_ERROR).is_displayed()
 
     def pass_field(self):
         self.element_wait(loc.PASSWORD_FIELD, 10)
         return self.find(loc.PASSWORD_FIELD)
 
     def login_success(self):
-        return self.element_wait(loc.HOMEPAGE_TITLE, 15)
+        self.element_wait(loc.HOMEPAGE_TITLE, 15)
+        return self.find(loc.HOMEPAGE_TITLE).is_displayed()
 
     def check_box(self):
         return self.find(loc.CHECK_BOX)
