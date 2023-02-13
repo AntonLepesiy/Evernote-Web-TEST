@@ -1,8 +1,7 @@
-from telnetlib import EC
 from selenium.common import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
 from pages.base_page import BasePage
 from pages.locators import home_page_locators as loc
+import allure
 
 
 class HomePage(BasePage):
@@ -18,11 +17,22 @@ class HomePage(BasePage):
     def login_success(self):
         self.element_wait(loc.HOMEPAGE_TITLE, 5)
 
+    def get_acc_name(self):
+        self.element_wait(loc.USER_PORTRAIT, 10)
+        self.find(loc.USER_PORTRAIT).click()
+        self.element_wait(loc.USER_MAIL, 150)
+        displayed_name = self.find(loc.USER_MAIL).text
+        return displayed_name
+
+    def check_page(self, page_title):
+        opened_page = self.get_page_title()
+        return opened_page == page_title
+
     def create_new_button(self):
         return self.find(loc.NEW_BUTTON)
 
     def create_new_note(self):
-        self.find(loc.NEW_NOTE)
+        self.find(loc.NEW_NOTE_BUTTON_IN_LEFT)
 
     def note_title(self):
         self.find(loc.NOTE_TITLE)
@@ -38,35 +48,54 @@ class HomePage(BasePage):
         return True
 
     def setting_button_is_displayed(self):
-        self.find(loc.MORE_ACTIONS_MENU).is_displayed()
+        return self.find(loc.MORE_ACTIONS_MENU).is_displayed()
 
-    def create_note(self, note_title, body_text):
+    def create_note_with_button_in_left_menu(self, note_title, body_text):
+        current_note_title = ''.join(['left', note_title])
         self.find(loc.NEW_BUTTON).click()
-        self.find(loc.NEW_NOTE).click()
+        self.find(loc.NEW_NOTE_BUTTON_IN_LEFT).click()
+        i_frame = self.find(loc.IFRAME)
+        self.switch_to_iframe(i_frame)
         self.element_wait(loc.NOTE_TITLE, 10)
-        # # self.find(loc.NOTE_TITLE).send_keys(note_title)
-        # self.find(loc.NOTE_BODY).send_keys(body_text)
-        # self.find(loc.HOME_BUTTON).click()
-
-    def create_note2(self):
-        self.find(loc.NEW_BUTTON).click()
-        self.find(loc.NEW_NOTE).click()
-        self.wait(10)
+        self.find(loc.NOTE_TITLE).send_keys(current_note_title)
+        self.find(loc.NOTE_BODY).send_keys(body_text)
+        self.switch_to_default()
+        self.find(loc.HOME_BUTTON).click()
+        self.find(loc.NOTES_BUTTON_IN_LEFT_MENU).click()
+        self.find(loc.FIRST_NOTE_IN_LIST).click()
+        i_frame = self.find(loc.IFRAME)
+        self.switch_to_iframe(i_frame)
         self.element_wait(loc.NOTE_TITLE, 10)
+        return self.find(loc.NOTE_TITLE).is_displayed()
 
-    # def get_acc_name(self):
-    #     acc_name =  "justlavtest@gmail.com"
-    #     displaed_name = self.find(loc.ACC_NAME).
-    #     return
+    def create_note_with_button_in_homepage_body(self, note_title, body_text):
+        current_note_title = ''.join(['body', note_title])
+        self.element_wait(loc.NOTES_BUTTON_IN_BODY, 10)
+        self.find(loc.NOTES_BUTTON_IN_BODY).click()
+        i_frame = self.find(loc.IFRAME)
+        self.switch_to_iframe(i_frame)
+        self.element_wait(loc.NOTE_TITLE, 10)
+        self.find(loc.NOTE_TITLE).send_keys(current_note_title)
+        self.find(loc.NOTE_BODY).send_keys(body_text)
+        self.switch_to_default()
+        self.find(loc.HOME_BUTTON).click()
+        self.find(loc.NOTES_BUTTON_IN_LEFT_MENU).click()
+        self.find(loc.FIRST_NOTE_IN_LIST).click()
+        i_frame = self.find(loc.IFRAME)
+        self.switch_to_iframe(i_frame)
+        self.element_wait(loc.NOTE_TITLE, 10)
+        return self.find(loc.NOTE_TITLE).is_displayed()
 
     def take_first_note(self):
-        self.element_wait(loc.NOTES_BUTTON, 15)
-        self.find(loc.NOTES_BUTTON).click()
-        self.find(loc.FIRST_NOTE_IN_LIST).click()
+        with allure.step('go to the notes list'):
+            self.element_wait(loc.NOTES_BUTTON_IN_LEFT_MENU, 15)
+            self.find(loc.NOTES_BUTTON_IN_LEFT_MENU).click()
+        with allure.step('take first note is notes list'):
+            self.find(loc.FIRST_NOTE_IN_LIST).click()
 
     def take_second_note(self):
-        self.element_wait(loc.NOTES_BUTTON, 15)
-        self.find(loc.NOTES_BUTTON).click()
+        self.element_wait(loc.NOTES_BUTTON_IN_LEFT_MENU, 15)
+        self.find(loc.NOTES_BUTTON_IN_LEFT_MENU).click()
         self.find(loc.FIRST_NOTE_IN_LIST).click()
 
     def go_to_more_actions_menu(self):
@@ -76,3 +105,4 @@ class HomePage(BasePage):
     def move_to_trash(self):  # click "move to trash in more_actions_list"
         self.find(loc.MOVE_TO_TRASH).click()
         self.element_wait(loc.MOVED_TO_TRASH_NOTIFICATION, 10)
+

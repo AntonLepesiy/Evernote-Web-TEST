@@ -33,9 +33,9 @@ class BasePage:
     def element_wait(self, locator, waiting_time):
         return WebDriverWait(self.driver, waiting_time).until(EC.presence_of_element_located(locator))
 
-    def page_title_check(self, title):
+    def page_title_check(self):
         current_title = self.driver.title
-        return current_title == title
+        return current_title
 
     def simple_login(self, username, password):
         self.find(loc.USERNAME_FIELD).send_keys(username)
@@ -44,7 +44,16 @@ class BasePage:
         self.find(loc.PASSWORD_FIELD).send_keys(password)
         self.find(loc.CHECK_BOX).click()
         self.find(loc.LOGIN_BUTTON).submit()
-        self.element_wait(loc.HOMEPAGE_TITLE, 15)
+        self.element_wait(loc.HOMEPAGE_TITLE, 30)
 
     def wait(self, time):
         self.driver.implicitly_wait(time)
+
+    def switch_to_iframe(self, i_frame):
+        self.driver.switch_to.frame(i_frame)
+
+    def switch_to_default(self):
+        self.driver.switch_to.default_content()
+
+    def get_page_title(self):
+        return self.driver.title
