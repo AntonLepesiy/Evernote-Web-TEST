@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from os.path import join, dirname
 from webdriver_manager.chrome import ChromeDriverManager
 from pages.home_page import HomePage
+import secured_test_data as TD
 
 
 @pytest.fixture(scope='function')
@@ -36,6 +37,6 @@ def is_logged(driver_with_cookies):
     if login_check.is_login_check():
         pass
     else:
-        username = 'justlavtest@gmail.com'
-        password = 'testHASLO1#'
+        username = TD.username
+        password = TD.password
         login_check.simple_login(username, password)
