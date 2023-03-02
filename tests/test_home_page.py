@@ -2,11 +2,12 @@ import pytest
 from pages.home_page import HomePage
 from datetime import datetime
 import allure
+import secured_test_data as TD
 
 current_datetime = str(datetime.now())
 note_title = ' '.join(['Test note: ', current_datetime])
 note_body = current_datetime
-acc_name = "justlavtest@gmail.com"
+acc_name = TD.username
 page_title = 'Home - Evernote'
 
 

@@ -1,9 +1,9 @@
 from pages.login_page import LoginPage
 import allure
-from time import sleep
+import secured_test_data as TD
 
-username = 'justlavtest@gmail.com'
-password = 'testHASLO1#'
+username = TD.username
+password = TD.password
 incorrect_username = 'bad_test_account@gmail.com'
 incorrect_password = 'bad_test_pass'
 create_acc_title = 'Создание аккаунта Evernote'
